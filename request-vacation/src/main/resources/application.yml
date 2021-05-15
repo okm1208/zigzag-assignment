@@ -27,6 +27,12 @@ spring:
       enabled: true
       path: /h2
 
+auth:
+  token:
+    expired-minute:
+      access-token: 10
+      refresh-token: 60
+
 logging:
   level:
     root: INFO

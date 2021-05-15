@@ -46,6 +46,9 @@ public class Account {
     @PrimaryKeyJoinColumn
     private VacationInfo vacationInfo;
 
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<RefreshToken> refreshTokens;
+
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public enum AccountStatus {
         ACTIVE("활성"),
