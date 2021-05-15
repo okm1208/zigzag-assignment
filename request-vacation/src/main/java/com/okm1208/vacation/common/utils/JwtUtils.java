@@ -30,8 +30,6 @@ import java.util.stream.Collectors;
  * @created 2021-05-15
  */
 public class JwtUtils {
-    private static JWTVerifier VERIFIER = JWT.require(getAlgorithm()).build();
-
     public static String createAccessToken(UserDetails userDetails, LocalDateTime expireDt ){
         return createToken(userDetails,expireDt);
     }
@@ -46,10 +44,11 @@ public class JwtUtils {
 
     public static void verify(String token)  throws CustomBusinessException {
         try{
-            VERIFIER.verify(token);
+            JWTVerifier verifier = JWT.require(getAlgorithm()).build();
+            verifier.verify(token);
         }catch(TokenExpiredException e){
             throw new AuthenticationException(ErrorMessageProperties.EXPIRED_ACCESS_TOKEN);
-        }catch(JWTVerificationException e){
+        }catch(JWTVerificationException | IllegalArgumentException e){
             throw new AuthenticationException( ErrorMessageProperties.INVALID_TOKEN );
         }
     }

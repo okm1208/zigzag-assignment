@@ -20,11 +20,13 @@ public class CommonResponse<T>{
     public static <T> CommonResponse<T> success(T t){
         return CommonResponse.<T>builder()
                 .data(t)
+                .message("success")
                 .build();
     }
 
     public static <Void> CommonResponse<Void> success(){
         return CommonResponse.<Void>builder()
+                .message("success")
                 .build();
     }
 }
