@@ -1,6 +1,10 @@
 package com.okm1208.vacation.common.config;
 
+import com.okm1208.vacation.auth.filter.JwtAuthenticationProcessingFilter;
+import com.okm1208.vacation.auth.filter.matchers.AuthPathRequestMatcher;
+import com.okm1208.vacation.auth.provider.JwtAuthenticationProvider;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -8,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             ));
     final List<String> authorizationPatterns = new ArrayList<>(
             Arrays.asList(
-                    "/register"
+                    "/vacation/**"
             ));
 
     @Override
@@ -52,7 +57,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(authorizationPatterns.toArray(new String[0])).hasRole("USER")
                 .anyRequest().permitAll()
             .and()
-            .   formLogin().disable();
+                .addFilterBefore(jwtAuthenticationFilter(), FilterSecurityInterceptor.class)
+            .formLogin().disable();
     }
 
     @Bean
@@ -61,4 +67,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
+    @Bean
+    public JwtAuthenticationProcessingFilter jwtAuthenticationFilter() throws Exception{
+        JwtAuthenticationProcessingFilter jwtAuthenticationProcessingFilter =
+                new JwtAuthenticationProcessingFilter(new AuthPathRequestMatcher(authorizationPatterns));
+
+        jwtAuthenticationProcessingFilter.setAuthenticationManager(super.authenticationManager());
+        return jwtAuthenticationProcessingFilter;
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) {
+        auth.authenticationProvider(jwtAuthenticationProvider());
+    }
+    @Bean
+    public JwtAuthenticationProvider jwtAuthenticationProvider(){
+        return new JwtAuthenticationProvider();
+    }
 }

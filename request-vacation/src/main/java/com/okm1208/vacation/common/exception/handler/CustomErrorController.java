@@ -92,6 +92,7 @@ public class CustomErrorController implements ErrorController {
                 || error instanceof ConstraintViolationException
                 || error instanceof ServletRequestBindingException
                 || error instanceof BindException
+                || error instanceof MethodArgumentNotValidException
                 || errorHttpStatus == HttpStatus.BAD_REQUEST) {
 
             return DefaultErrorResponse.BAD_REQUEST;
