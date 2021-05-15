@@ -8,4 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @created 2021-05-14
  */
 public interface AccountRepository extends JpaRepository<Account, Long> {
+    Account findByAccountId(String id);
 }

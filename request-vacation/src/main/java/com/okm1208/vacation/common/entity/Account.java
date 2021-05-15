@@ -1,9 +1,6 @@
 package com.okm1208.vacation.common.entity;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -18,6 +15,8 @@ import java.util.List;
 @Entity
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Account {
 
     @Id
@@ -25,7 +24,7 @@ public class Account {
     private Long accountNo;
 
     @Column(length = 30, nullable = false, unique = true)
-    private String id;
+    private String accountId;
 
     @Column(length = 200, nullable = false)
     private String password;

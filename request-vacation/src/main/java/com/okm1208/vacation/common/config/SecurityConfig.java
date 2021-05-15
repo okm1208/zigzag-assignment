@@ -8,6 +8,10 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 
 /**
  * @author Nick (okm1208@gmail.com)
@@ -15,18 +19,34 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  */
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    final List<String> permitAllPatterns = new ArrayList<>(
+            Arrays.asList(
+                    "/error",
+                    "/auth/**"
+            ));
+    final List<String> authorizationPatterns = new ArrayList<>(
+            Arrays.asList(
+                    "/register"
+            ));
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .csrf().disable()
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
+                .authorizeRequests()
+                .antMatchers(permitAllPatterns.toArray(new String[0])).permitAll()
+                .antMatchers(authorizationPatterns.toArray(new String[0])).hasRole("USER")
+                .anyRequest().permitAll()
+            .and()
+            .   formLogin().disable();
+    }
+
     @Bean
     public PasswordEncoder encoder() {
         return new BCryptPasswordEncoder();
     }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
 
-        http
-                .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .formLogin().disable();
-    }
 }

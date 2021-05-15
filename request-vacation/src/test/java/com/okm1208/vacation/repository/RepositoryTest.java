@@ -49,11 +49,7 @@ public class RepositoryTest {
 
     @Test
     public void 계정_생성_및_조회_테스트(){
-        Account account = Account.builder()
-                .id("nick_test")
-                .status(Account.AccountStatus.ACTIVE)
-                .password(passwordEncoder.encode("nick_password"))
-                .build();
+        Account account = makeBaseAccount();
         accountRepository.save(account);
 
         Account retrieveAccount = accountRepository.findById(account.getAccountNo()).orElseGet(null);
@@ -65,14 +61,10 @@ public class RepositoryTest {
 
     @Test
     public void 계정_중복_등록_테스트(){
-        Account account = Account.builder()
-                        .id("nick_test")
-                        .status(Account.AccountStatus.ACTIVE)
-                        .password(passwordEncoder.encode("nick_password"))
-                        .build();
+        Account account = makeBaseAccount();
         accountRepository.save(account);
         final Account dupAccount = Account.builder()
-                .id("nick_test")
+                .accountId("nick_test")
                 .status(Account.AccountStatus.ACTIVE)
                 .password(passwordEncoder.encode("nick_password"))
                 .build();
@@ -83,11 +75,7 @@ public class RepositoryTest {
 
     @Test
     public void 휴가_정보초기화_및_조회_테스트(){
-        Account account = Account.builder()
-                .id("nick_test")
-                .status(Account.AccountStatus.ACTIVE)
-                .password(passwordEncoder.encode("nick_password"))
-                .build();
+        Account account = makeBaseAccount();
         accountRepository.save(account);
 
         VacationInfo vacationInfo = VacationInfo.
@@ -121,11 +109,7 @@ public class RepositoryTest {
 
     @Test
     public void 휴가_연차사용_생성_및_조회테스트(){
-        Account account = Account.builder()
-                .id("nick_test")
-                .status(Account.AccountStatus.ACTIVE)
-                .password(passwordEncoder.encode("nick_password"))
-                .build();
+        Account account = makeBaseAccount();
         accountRepository.save(account);
 
         VacationInfo vacationInfo = VacationInfo.
@@ -155,5 +139,15 @@ public class RepositoryTest {
         VacationHistory retrieveVacationHistory =
                 vacationHistoryRepository.findById(pk).orElseGet(null);
         assertNotNull(retrieveVacationHistory);
+    }
+
+    public Account makeBaseAccount(){
+        return Account.builder()
+                .accountId("nick_test")
+                .status(Account.AccountStatus.ACTIVE)
+                .password(passwordEncoder.encode("nick_password"))
+                .active(true)
+                .build();
+
     }
 }
