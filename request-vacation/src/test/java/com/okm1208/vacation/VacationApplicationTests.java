@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 class VacationApplicationTests {
 
     @Test
-    void contextLoads() {∂
+    void contextLoads() {
     }
 
 }
