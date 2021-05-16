@@ -1,4 +1,4 @@
-package com.okm1208.vacation.register.service.impl;
+package com.okm1208.vacation.manager.service.impl;
 
 import com.okm1208.vacation.account.repository.AccountRepository;
 import com.okm1208.vacation.common.entity.Account;
@@ -6,10 +6,10 @@ import com.okm1208.vacation.common.entity.VacationInfo;
 import com.okm1208.vacation.common.enums.VacationType;
 import com.okm1208.vacation.common.exception.BadRequestException;
 import com.okm1208.vacation.common.msg.ErrorMessageProperties;
-import com.okm1208.vacation.register.model.VacationRegisterDto;
-import com.okm1208.vacation.register.repository.VacationInfoRepository;
-import com.okm1208.vacation.register.service.VacationManager;
-import com.okm1208.vacation.register.service.VacationManagerTest;
+import com.okm1208.vacation.manager.model.VacationRegisterDto;
+import com.okm1208.vacation.manager.repository.VacationInfoRepository;
+import com.okm1208.vacation.manager.service.VacationRegisterManager;
+import com.okm1208.vacation.manager.service.VacationManagerTest;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,10 +38,10 @@ public class VacationRegisterIntegrationsTests extends VacationManagerTest {
     VacationInfoRepository vacationInfoRepository;
 
     @Autowired
-    VacationManager annualLeaveManager;
+    VacationRegisterManager annualLeaveManager;
 
     @Autowired
-    VacationManager halfDayManager;
+    VacationRegisterManager halfDayManager;
 
     @Test
     @Transactional

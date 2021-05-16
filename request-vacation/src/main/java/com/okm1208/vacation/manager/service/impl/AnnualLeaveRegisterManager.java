@@ -1,4 +1,4 @@
-package com.okm1208.vacation.register.service.impl;
+package com.okm1208.vacation.manager.service.impl;
 
 import com.okm1208.vacation.account.repository.AccountRepository;
 import com.okm1208.vacation.common.entity.VacationHistory;
@@ -7,9 +7,9 @@ import com.okm1208.vacation.common.enums.VacationType;
 import com.okm1208.vacation.common.exception.BadRequestException;
 import com.okm1208.vacation.common.utils.DateRange;
 import com.okm1208.vacation.common.utils.HolidayChecker;
-import com.okm1208.vacation.register.model.ApplyRegisterDto;
-import com.okm1208.vacation.register.model.VacationRegisterDto;
-import com.okm1208.vacation.register.service.VacationManager;
+import com.okm1208.vacation.manager.model.ApplyRegisterDto;
+import com.okm1208.vacation.manager.model.VacationRegisterDto;
+import com.okm1208.vacation.manager.service.VacationRegisterManager;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
@@ -26,9 +26,9 @@ import static com.okm1208.vacation.common.msg.ErrorMessageProperties.*;
  * @created 2021-05-15
  */
 
-public class AnnualLeaveManager extends VacationManager {
+public class AnnualLeaveRegisterManager extends VacationRegisterManager {
 
-    public AnnualLeaveManager(AccountRepository accountRepository){
+    public AnnualLeaveRegisterManager(AccountRepository accountRepository){
         super(accountRepository);
     }
 
@@ -77,6 +77,7 @@ public class AnnualLeaveManager extends VacationManager {
             ApplyRegisterDto.builder()
                     .regDt(v)
                     .vacationType(VacationType.ANNUAL_LEAVE)
+                    .comment(registerDto.getComment())
                     .build()
         ).collect(Collectors.toList());
     }
@@ -91,19 +92,13 @@ public class AnnualLeaveManager extends VacationManager {
                         .collect(Collectors.toList());
 
         for(ApplyRegisterDto applyRegisterDto : applyRegisterDtoList){
-            Long maxHistoryNo = vacationInfo.getVacationHistoryList()
-                    .stream()
-                    .map(v->v.getHistoryNo())
-                    .max(Long::compareTo)
-                    .orElse(0L);
-
             VacationHistory applyVacationHistory = VacationHistory.
                     builder()
                     .vacationType(applyRegisterDto.getVacationType())
                     .vacationInfo(vacationInfo)
                     .accountNo(vacationInfo.getAccountNo())
-                    .historyNo(maxHistoryNo+1)
                     .regDt(applyRegisterDto.getRegDt())
+                    .comment(applyRegisterDto.getComment())
                     .build();
 
             vacationInfo.getVacationHistoryList().add(applyVacationHistory);

@@ -3,10 +3,7 @@ package com.okm1208.vacation.common.entity;
 import com.okm1208.vacation.common.entity.convert.VacationTypeConverter;
 import com.okm1208.vacation.common.entity.pk.VacationHistoryPk;
 import com.okm1208.vacation.common.enums.VacationType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -23,12 +20,12 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@IdClass(VacationHistoryPk.class)
 public class VacationHistory {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long historyNo;
 
-    @Id
+    @Column
     private Long accountNo;
 
     @Column(length = 20, nullable = false)
@@ -37,6 +34,9 @@ public class VacationHistory {
 
     @Column(nullable = false)
     private LocalDate regDt;
+
+    @Column(length = 200, nullable = true)
+    private String comment;
 
     @ManyToOne
     @JoinColumn(name = "accountNo", insertable = false , updatable = false)

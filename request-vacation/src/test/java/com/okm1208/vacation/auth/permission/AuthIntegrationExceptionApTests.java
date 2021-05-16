@@ -47,7 +47,7 @@ public class AuthIntegrationExceptionApTests {
 
     @BeforeEach
     public void init(){
-        this.getVacationRegisterApiUrl =  "http://localhost:" + port + "/vacation/register";
+        this.getVacationRegisterApiUrl =  "http://localhost:" + port + "/vacations/register";
         //mock 계정 초기화
         this.mockAccount = new Account();
         this.mockAccount.setAccountId(accountId);

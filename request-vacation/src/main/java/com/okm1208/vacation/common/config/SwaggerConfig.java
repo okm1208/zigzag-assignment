@@ -28,7 +28,7 @@ import java.util.List;
 public class SwaggerConfig {
 
     public static final String AUTHORIZATION_HEADER = "Authorization";
-    public static final String DEFAULT_INCLUDE_PATTERN = "/register/.*";
+    public static final String DEFAULT_INCLUDE_PATTERN = "/vacations";
     private final Environment env;
 
     public SwaggerConfig(Environment environment) {
@@ -65,7 +65,7 @@ public class SwaggerConfig {
     private SecurityContext securityContext() {
         return SecurityContext.builder()
                 .securityReferences(defaultAuth())
-                .forPaths(PathSelectors.regex(DEFAULT_INCLUDE_PATTERN))
+                .forPaths(PathSelectors.any())
                 .build();
     }
 

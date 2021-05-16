@@ -1,10 +1,10 @@
-package com.okm1208.vacation.register.service.impl;
+package com.okm1208.vacation.manager.service.impl;
 
 import com.okm1208.vacation.account.repository.AccountRepository;
 import com.okm1208.vacation.common.entity.Account;
 import com.okm1208.vacation.common.entity.VacationInfo;
-import com.okm1208.vacation.register.model.ApplyRegisterDto;
-import com.okm1208.vacation.register.service.VacationManagerTest;
+import com.okm1208.vacation.manager.model.ApplyRegisterDto;
+import com.okm1208.vacation.manager.service.VacationManagerTest;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class AnnualLeaveManagerApplyTests extends VacationManagerTest {
     @Autowired
     AccountRepository accountRepository;
 
-    AnnualLeaveManager annualLeaveManager = new AnnualLeaveManager(accountRepository);
+    AnnualLeaveRegisterManager annualLeaveManager = new AnnualLeaveRegisterManager(accountRepository);
 
     @Test
     public void 연차_등록_테스트(){
@@ -61,8 +61,5 @@ public class AnnualLeaveManagerApplyTests extends VacationManagerTest {
         assertThat(account.getVacationInfo().getVacationHistoryList().size(), is(5));
         assertThat(account.getVacationInfo().getUseDays(), Matchers.comparesEqualTo(BigDecimal.valueOf(5.0)));
         assertThat(account.getVacationInfo().getRemainingDays(), Matchers.comparesEqualTo(BigDecimal.valueOf(10.0)));
-
     }
-
-
 }

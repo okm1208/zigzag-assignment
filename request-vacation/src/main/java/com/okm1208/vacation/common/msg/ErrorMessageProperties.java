@@ -14,6 +14,8 @@ public class ErrorMessageProperties {
     public static final String EXPIRED_ACCESS_TOKEN = "엑세스 토큰이 만료되었습니다.";
     public static final String INVALID_TOKEN = "유효하지 않은 토큰입니다.";
 
+    public static final String EMPTY_DATA = "유효한 데이터가 없습니다.";
+
     public static final String EMPTY_AUTHORITIES = "유효한 권한이 없습니다.";
     public static final String CREATE_TOKEN_FAILED = "토큰 생성 실패.";
 
@@ -22,7 +24,11 @@ public class ErrorMessageProperties {
 
     public static final String REGISTER_ERROR_01 ="공휴일에는 휴가를 신청 하실 수 없습니다.";
     public static final String REGISTER_ERROR_02 ="신청하신 날짜에 더이상 휴가를 등록 할 수 없습니다.";
-    public static final String REGISTER_ERROR_03 ="사용하실수 있는 연차가 부족 합니다.";
+    public static final String REGISTER_ERROR_03 ="사용하실수 있는 휴가가 부족 합니다.";
+
+    public static final String REGISTER_ERROR_04 ="시작일과 종료일을 확인해주세요.";
+
+    public static final String CANCEL_ERROR_01 = "이미 사용하신 휴가는 취소 할 수 없습니다.";
 
 
 }

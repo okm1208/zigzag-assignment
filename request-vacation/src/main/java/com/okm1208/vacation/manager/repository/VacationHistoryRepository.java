@@ -1,7 +1,6 @@
-package com.okm1208.vacation.register.repository;
+package com.okm1208.vacation.manager.repository;
 
 import com.okm1208.vacation.common.entity.VacationHistory;
-import com.okm1208.vacation.common.entity.VacationInfo;
 import com.okm1208.vacation.common.entity.pk.VacationHistoryPk;
 import org.springframework.data.jpa.repository.JpaRepository;
 

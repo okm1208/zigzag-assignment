@@ -1,11 +1,11 @@
-package com.okm1208.vacation.register.service;
+package com.okm1208.vacation.manager.service;
 
 import com.okm1208.vacation.common.entity.Account;
 import com.okm1208.vacation.common.entity.VacationHistory;
 import com.okm1208.vacation.common.entity.VacationInfo;
 import com.okm1208.vacation.common.enums.VacationType;
-import com.okm1208.vacation.register.model.ApplyRegisterDto;
-import com.okm1208.vacation.register.model.VacationRegisterDto;
+import com.okm1208.vacation.manager.model.ApplyRegisterDto;
+import com.okm1208.vacation.manager.model.VacationRegisterDto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

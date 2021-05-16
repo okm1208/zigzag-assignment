@@ -1,5 +1,6 @@
 package com.okm1208.vacation.common.enums;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 
 import java.math.BigDecimal;
@@ -26,6 +27,7 @@ public enum VacationType {
                 .orElseThrow(() -> new RuntimeException(""));
     }
 
+    @JsonValue
     public String getType() {
         return type;
     }

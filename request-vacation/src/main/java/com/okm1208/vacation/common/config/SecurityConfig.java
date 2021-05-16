@@ -33,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             ));
     final List<String> authorizationPatterns = new ArrayList<>(
             Arrays.asList(
-                    "/vacation/**"
+                    "/vacations/**"
             ));
 
     @Override

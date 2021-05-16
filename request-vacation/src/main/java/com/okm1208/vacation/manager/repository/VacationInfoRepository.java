@@ -1,4 +1,4 @@
-package com.okm1208.vacation.register.repository;
+package com.okm1208.vacation.manager.repository;
 
 import com.okm1208.vacation.common.entity.VacationInfo;
 import org.springframework.data.jpa.repository.JpaRepository;

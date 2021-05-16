@@ -1,9 +1,9 @@
 package com.okm1208.vacation.common.config;
 
 import com.okm1208.vacation.account.repository.AccountRepository;
-import com.okm1208.vacation.register.service.VacationManager;
-import com.okm1208.vacation.register.service.impl.AnnualLeaveManager;
-import com.okm1208.vacation.register.service.impl.HalfDayManager;
+import com.okm1208.vacation.manager.service.VacationRegisterManager;
+import com.okm1208.vacation.manager.service.impl.AnnualLeaveRegisterManager;
+import com.okm1208.vacation.manager.service.impl.HalfDayRegisterManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,11 +19,11 @@ public class CustomConfig {
     private AccountRepository accountRepository;
 
     @Bean
-    public VacationManager halfDayManager(){
-        return new HalfDayManager(accountRepository);
+    public VacationRegisterManager halfDayManager(){
+        return new HalfDayRegisterManager(accountRepository);
     }
     @Bean
-    public VacationManager annualLeaveManager(){
-        return new AnnualLeaveManager(accountRepository);
+    public VacationRegisterManager annualLeaveManager(){
+        return new AnnualLeaveRegisterManager(accountRepository);
     }
 }

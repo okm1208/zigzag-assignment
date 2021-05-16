@@ -1,4 +1,4 @@
-package com.okm1208.vacation.register.model;
+package com.okm1208.vacation.manager.model;
 
 import com.okm1208.vacation.common.enums.VacationType;
 import lombok.Data;

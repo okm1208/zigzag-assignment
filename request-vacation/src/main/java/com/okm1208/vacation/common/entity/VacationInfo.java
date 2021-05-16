@@ -37,7 +37,7 @@ public class VacationInfo {
     @Column(precision = 4, scale = 2 , nullable = false)
     private BigDecimal remainingDays;
 
-    @OneToMany(cascade = CascadeType.ALL ,orphanRemoval = true )
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name ="accountNo")
     private List<VacationHistory> vacationHistoryList = new ArrayList<>();
 

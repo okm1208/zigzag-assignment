@@ -1,4 +1,4 @@
-package com.okm1208.vacation.register.model;
+package com.okm1208.vacation.manager.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

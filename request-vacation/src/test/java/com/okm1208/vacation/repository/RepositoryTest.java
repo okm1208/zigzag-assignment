@@ -4,10 +4,9 @@ import com.okm1208.vacation.account.repository.AccountRepository;
 import com.okm1208.vacation.common.entity.Account;
 import com.okm1208.vacation.common.entity.VacationHistory;
 import com.okm1208.vacation.common.entity.VacationInfo;
-import com.okm1208.vacation.common.entity.pk.VacationHistoryPk;
 import com.okm1208.vacation.common.enums.VacationType;
-import com.okm1208.vacation.register.repository.VacationHistoryRepository;
-import com.okm1208.vacation.register.repository.VacationInfoRepository;
+import com.okm1208.vacation.manager.repository.VacationHistoryRepository;
+import com.okm1208.vacation.manager.repository.VacationInfoRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -20,7 +19,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -130,7 +128,6 @@ public class RepositoryTest {
         VacationHistory annualLeaveHistory = VacationHistory.
                 builder()
                 .accountNo(account.getAccountNo())
-                .historyNo(Long.valueOf(1))
                 .vacationInfo(vacationInfo)
                 .regDt(LocalDate.now())
                 .vacationType(VacationType.ANNUAL_LEAVE)
@@ -141,7 +138,6 @@ public class RepositoryTest {
         annualLeaveHistory = VacationHistory.
                 builder()
                 .accountNo(account.getAccountNo())
-                .historyNo(Long.valueOf(2))
                 .vacationInfo(vacationInfo)
                 .regDt(LocalDate.now())
                 .vacationType(VacationType.ANNUAL_LEAVE)
@@ -152,14 +148,6 @@ public class RepositoryTest {
 
         assertNotNull(allHistory);
         assertThat(allHistory.size(), is(2));
-//        vacationHistoryRepository.save(annualLeaveHistory);
-//        VacationHistoryPk pk = new VacationHistoryPk();
-//        pk.setAccountNo(account.getAccountNo());
-//        pk.setHistoryNo(annualLeaveHistory.getHistoryNo());
-//
-//        VacationHistory retrieveVacationHistory =
-//                vacationHistoryRepository.findById(pk).orElseGet(null);
-//        assertNotNull(retrieveVacationHistory);
     }
 
     public Account makeBaseAccount(){

@@ -1,11 +1,11 @@
-package com.okm1208.vacation.register.service.impl;
+package com.okm1208.vacation.manager.service.impl;
 
 import com.okm1208.vacation.account.repository.AccountRepository;
 import com.okm1208.vacation.common.entity.VacationInfo;
 import com.okm1208.vacation.common.exception.BadRequestException;
 import com.okm1208.vacation.common.msg.ErrorMessageProperties;
-import com.okm1208.vacation.register.model.VacationRegisterDto;
-import com.okm1208.vacation.register.service.VacationManagerTest;
+import com.okm1208.vacation.manager.model.VacationRegisterDto;
+import com.okm1208.vacation.manager.service.VacationManagerTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -25,7 +25,7 @@ public class AnnualLeaveManagerValidateTests extends VacationManagerTest {
     @Autowired
     AccountRepository accountRepository;
 
-    AnnualLeaveManager annualLeaveManager = new AnnualLeaveManager(accountRepository);
+    AnnualLeaveRegisterManager annualLeaveManager = new AnnualLeaveRegisterManager(accountRepository);
 
     @Test
     public void 연차_등록_공휴일_유효성검사(){
