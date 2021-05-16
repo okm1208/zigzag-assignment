@@ -1,7 +1,7 @@
 package com.okm1208.vacation.auth.service.impl;
 
 import com.okm1208.vacation.account.repository.AccountRepository;
-import com.okm1208.vacation.account.repository.RefreshTokenRepository;
+import com.okm1208.vacation.auth.repository.RefreshTokenRepository;
 import com.okm1208.vacation.auth.model.TokenIssueVo;
 import com.okm1208.vacation.auth.userdetails.AccountUserDetails;
 import com.okm1208.vacation.common.entity.Account;
@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 

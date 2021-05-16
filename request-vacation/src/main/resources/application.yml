@@ -9,7 +9,7 @@ spring:
   application:
     name: request-vacation
   datasource:
-    url: jdbc:h2:mem:vacation
+    url: jdbc:h2:mem:request-vacation
     driver-class-name: org.h2.Driver
     username: admin
     password: admin1234

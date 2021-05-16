@@ -4,10 +4,12 @@ import com.okm1208.vacation.account.repository.AccountRepository;
 import com.okm1208.vacation.common.entity.Account;
 import com.okm1208.vacation.common.entity.VacationInfo;
 import com.okm1208.vacation.common.enums.VacationType;
+import com.okm1208.vacation.register.model.ApplyRegisterDto;
 import com.okm1208.vacation.register.model.VacationRegisterDto;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * @author Nick ( okm1208@gmail.com )
@@ -15,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Slf4j
 public abstract class VacationManager {
-    private AccountRepository accountRepository;
+    protected AccountRepository accountRepository;
 
     public VacationManager(AccountRepository accountRepository){
         this.accountRepository = accountRepository;
@@ -25,12 +27,12 @@ public abstract class VacationManager {
     public void register(VacationRegisterDto registerDto){
         Account account = accountRepository.findByAccountId(registerDto.getAccountId());
 
-        validate(registerDto,account.getVacationInfo());
-        apply(registerDto,account.getVacationInfo());
+        List<ApplyRegisterDto> applyRegisterDtoList = validate(registerDto,account.getVacationInfo());
+        apply(applyRegisterDtoList,account.getVacationInfo());
     }
 
-    abstract protected void validate(VacationRegisterDto registerDto, VacationInfo vacationInfo);
-    abstract protected void apply(VacationRegisterDto registerDto, VacationInfo vacationInfo);
+    abstract protected List<ApplyRegisterDto> validate(VacationRegisterDto registerDto, VacationInfo vacationInfo);
+    abstract protected void apply(List<ApplyRegisterDto> applyRegisterDtoList, VacationInfo vacationInfo);
     abstract protected VacationType getType();
 
     public void cancel(){

@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
         ApiLoginAuthentication.class,
         AccountDetailsService.class,
         BCryptPasswordEncoder.class} )
-public class ApiLoginAuthenticationTest {
+public class ApiLoginAuthenticationTests {
 
     @Autowired
     private LoginAuthentication loginAuthentication;

@@ -4,21 +4,16 @@ import com.okm1208.vacation.account.repository.AccountRepository;
 import com.okm1208.vacation.common.entity.Account;
 import com.okm1208.vacation.common.entity.VacationHistory;
 import com.okm1208.vacation.common.entity.VacationInfo;
-import com.okm1208.vacation.common.enums.VacationType;
-import com.okm1208.vacation.common.exception.BadRequestException;
-import com.okm1208.vacation.common.msg.ErrorMessageProperties;
-import com.okm1208.vacation.register.model.VacationRegisterDto;
+import com.okm1208.vacation.register.model.ApplyRegisterDto;
+import com.okm1208.vacation.register.service.VacationManagerTest;
 import org.hamcrest.Matchers;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import static com.okm1208.vacation.common.enums.VacationType.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -26,7 +21,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-public class HalfDayManagerApplyTest {
+public class HalfDayManagerApplyTests extends VacationManagerTest {
 
     @Autowired
     AccountRepository accountRepository;
@@ -35,26 +30,15 @@ public class HalfDayManagerApplyTest {
 
     @Test
     public void 반차_등록_테스트(){
-        Account account = Account.builder()
-                .active(true)
-                .status(Account.AccountStatus.ACTIVE)
-                .password("test")
-                .accountId("nick")
-                .build();
-        VacationInfo vacationInfo = VacationInfo.builder()
-                .remainingDays(BigDecimal.valueOf(15.0))
-                .useDays(BigDecimal.valueOf(0))
-                .occursDays(BigDecimal.valueOf(15.0))
-                .account(account)
-                .vacationHistoryList(new ArrayList<>())
-                .build();
+        Account account = makeMockAccount("nick", "test");
+        VacationInfo vacationInfo = makeMockVacationInfo(account, BigDecimal.valueOf(15.0));
 
         account.setVacationInfo(vacationInfo);
         accountRepository.save(account);
 
         //반차 등록
-        VacationRegisterDto registerDto = makeMockRegisterDto(HALF_DAY_LEAVE, LocalDate.parse("2021-01-05"));
-        halfDayManager.apply(registerDto, account.getVacationInfo());
+        ApplyRegisterDto applyRegisterDto = makeMockApplyRegisterDto(HALF_DAY_LEAVE, LocalDate.parse("2021-01-05"));
+        halfDayManager.apply(Arrays.asList(applyRegisterDto), account.getVacationInfo());
 
         assertNotNull(account.getVacationInfo().getVacationHistoryList());
         assertThat(account.getVacationInfo().getVacationHistoryList().size(), is(1));
@@ -68,8 +52,8 @@ public class HalfDayManagerApplyTest {
 
 
         //반반차 등록
-        registerDto = makeMockRegisterDto(HALF_AND_HALF_LEAVE, LocalDate.parse("2021-01-05"));
-        halfDayManager.apply(registerDto, account.getVacationInfo());
+        applyRegisterDto = makeMockApplyRegisterDto(HALF_AND_HALF_LEAVE, LocalDate.parse("2021-01-05"));
+        halfDayManager.apply(Arrays.asList(applyRegisterDto), account.getVacationInfo());
 
         assertNotNull(account.getVacationInfo().getVacationHistoryList());
         assertThat(account.getVacationInfo().getVacationHistoryList().size(), is(2));
@@ -81,8 +65,8 @@ public class HalfDayManagerApplyTest {
         assertThat(account.getVacationInfo().getRemainingDays(), Matchers.comparesEqualTo(BigDecimal.valueOf(14.25)));
 
         //반반차 등록
-        registerDto = makeMockRegisterDto(HALF_AND_HALF_LEAVE, LocalDate.parse("2021-01-05"));
-        halfDayManager.apply(registerDto, account.getVacationInfo());
+        applyRegisterDto = makeMockApplyRegisterDto(HALF_AND_HALF_LEAVE, LocalDate.parse("2021-01-05"));
+        halfDayManager.apply(Arrays.asList(applyRegisterDto), account.getVacationInfo());
 
         assertNotNull(account.getVacationInfo().getVacationHistoryList());
         assertThat(account.getVacationInfo().getVacationHistoryList().size(), is(3));
@@ -96,10 +80,4 @@ public class HalfDayManagerApplyTest {
 
     }
 
-    private VacationRegisterDto makeMockRegisterDto(VacationType vacationType, LocalDate startDt){
-        return VacationRegisterDto.builder()
-                .vacationType(vacationType)
-                .startDt(startDt)
-                .build();
-    }
 }

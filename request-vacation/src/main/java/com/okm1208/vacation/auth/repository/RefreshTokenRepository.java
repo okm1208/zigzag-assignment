@@ -1,4 +1,4 @@
-package com.okm1208.vacation.account.repository;
+package com.okm1208.vacation.auth.repository;
 
 import com.okm1208.vacation.common.entity.RefreshToken;
 import org.springframework.data.jpa.repository.JpaRepository;

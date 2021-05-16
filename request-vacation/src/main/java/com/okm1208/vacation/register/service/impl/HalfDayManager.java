@@ -6,12 +6,15 @@ import com.okm1208.vacation.common.entity.VacationInfo;
 import com.okm1208.vacation.common.enums.VacationType;
 import com.okm1208.vacation.common.exception.BadRequestException;
 import com.okm1208.vacation.common.utils.HolidayChecker;
+import com.okm1208.vacation.register.model.ApplyRegisterDto;
 import com.okm1208.vacation.register.model.VacationRegisterDto;
 import com.okm1208.vacation.register.service.VacationManager;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
 
 import static com.okm1208.vacation.common.msg.ErrorMessageProperties.*;
 
@@ -26,7 +29,7 @@ public class HalfDayManager extends VacationManager {
     }
 
     @Override
-    protected void validate(VacationRegisterDto registerDto , VacationInfo vacationInfo){
+    protected List<ApplyRegisterDto> validate(VacationRegisterDto registerDto , VacationInfo vacationInfo){
         final LocalDate startDt = registerDto.getStartDt();
 
         //공휴일 체크
@@ -53,11 +56,19 @@ public class HalfDayManager extends VacationManager {
         if(registerDays.compareTo(remainingDays) > 0){
             throw BadRequestException.of(REGISTER_ERROR_03);
         }
+
+        return Arrays.asList(ApplyRegisterDto
+                .builder()
+                .regDt(startDt)
+                .vacationType(registerDto.getVacationType())
+                .build());
     }
 
     @Override
     @Transactional
-    protected void apply(VacationRegisterDto registerDto, VacationInfo vacationInfo) {
+    protected void apply(List<ApplyRegisterDto> applyRegisterDtoList, VacationInfo vacationInfo) {
+        ApplyRegisterDto applyRegisterDto = applyRegisterDtoList.get(0);
+
         Long maxHistoryNo = vacationInfo.getVacationHistoryList()
                 .stream()
                 .map(v->v.getHistoryNo())
@@ -66,11 +77,11 @@ public class HalfDayManager extends VacationManager {
 
         VacationHistory applyVacationHistory = VacationHistory.
                 builder()
-                .vacationType(registerDto.getVacationType())
+                .vacationType(applyRegisterDto.getVacationType())
                 .vacationInfo(vacationInfo)
                 .accountNo(vacationInfo.getAccountNo())
                 .historyNo(maxHistoryNo+1)
-                .regDt(registerDto.getStartDt())
+                .regDt(applyRegisterDto.getRegDt())
                 .build();
 
         vacationInfo.getVacationHistoryList().add(applyVacationHistory);
@@ -78,10 +89,8 @@ public class HalfDayManager extends VacationManager {
         BigDecimal remainingDays = vacationInfo.getRemainingDays();
         BigDecimal useDays = vacationInfo.getUseDays();
 
-        vacationInfo.setRemainingDays(remainingDays.subtract(registerDto.getVacationType().getUseDays()));
-        vacationInfo.setUseDays(useDays.add(registerDto.getVacationType().getUseDays()));
-
-
+        vacationInfo.setRemainingDays(remainingDays.subtract(applyRegisterDto.getVacationType().getUseDays()));
+        vacationInfo.setUseDays(useDays.add(applyRegisterDto.getVacationType().getUseDays()));
     }
 
     @Override

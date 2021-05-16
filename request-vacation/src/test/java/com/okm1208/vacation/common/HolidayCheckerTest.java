@@ -1,12 +1,10 @@
-package com.okm1208.vacation.register.service;
+package com.okm1208.vacation.common;
 
 import com.okm1208.vacation.common.utils.HolidayChecker;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
