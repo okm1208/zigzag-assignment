@@ -19,7 +19,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -76,8 +79,6 @@ public class RepositoryTest {
     @Test
     public void 휴가_정보초기화_및_조회_테스트(){
         Account account = makeBaseAccount();
-        accountRepository.save(account);
-
         VacationInfo vacationInfo = VacationInfo.
                 builder()
                 .account(account)
@@ -86,7 +87,9 @@ public class RepositoryTest {
                 .useDays(BigDecimal.valueOf(0))
                 .build();
 
-        vacationInfoRepository.save(vacationInfo);
+        account.setVacationInfo(vacationInfo);
+        accountRepository.save(account);
+
         VacationInfo retrieveVacationInfo =
                 vacationInfoRepository.findById(vacationInfo.getAccountNo()).orElseGet(null);
         assertNotNull(retrieveVacationInfo);
@@ -110,6 +113,7 @@ public class RepositoryTest {
     @Test
     public void 휴가_연차사용_생성_및_조회테스트(){
         Account account = makeBaseAccount();
+
         accountRepository.save(account);
 
         VacationInfo vacationInfo = VacationInfo.
@@ -118,27 +122,44 @@ public class RepositoryTest {
                 .occursDays(BigDecimal.valueOf(15.0))
                 .remainingDays(BigDecimal.valueOf(0))
                 .useDays(BigDecimal.valueOf(0))
+                .vacationHistoryList(new ArrayList<>())
                 .build();
 
-        vacationInfoRepository.save(vacationInfo);
-
+        account.setVacationInfo(vacationInfo);
 
         VacationHistory annualLeaveHistory = VacationHistory.
                 builder()
                 .accountNo(account.getAccountNo())
                 .historyNo(Long.valueOf(1))
-                .regDt(LocalDateTime.now())
+                .vacationInfo(vacationInfo)
+                .regDt(LocalDate.now())
                 .vacationType(VacationType.ANNUAL_LEAVE)
                 .build();
 
-        vacationHistoryRepository.save(annualLeaveHistory);
-        VacationHistoryPk pk = new VacationHistoryPk();
-        pk.setAccountNo(account.getAccountNo());
-        pk.setHistoryNo(annualLeaveHistory.getHistoryNo());
+        vacationInfo.getVacationHistoryList().add(annualLeaveHistory);
 
-        VacationHistory retrieveVacationHistory =
-                vacationHistoryRepository.findById(pk).orElseGet(null);
-        assertNotNull(retrieveVacationHistory);
+        annualLeaveHistory = VacationHistory.
+                builder()
+                .accountNo(account.getAccountNo())
+                .historyNo(Long.valueOf(2))
+                .vacationInfo(vacationInfo)
+                .regDt(LocalDate.now())
+                .vacationType(VacationType.ANNUAL_LEAVE)
+                .build();
+        vacationInfo.getVacationHistoryList().add(annualLeaveHistory);
+
+        List<VacationHistory> allHistory = vacationHistoryRepository.findAll();
+
+        assertNotNull(allHistory);
+        assertThat(allHistory.size(), is(2));
+//        vacationHistoryRepository.save(annualLeaveHistory);
+//        VacationHistoryPk pk = new VacationHistoryPk();
+//        pk.setAccountNo(account.getAccountNo());
+//        pk.setHistoryNo(annualLeaveHistory.getHistoryNo());
+//
+//        VacationHistory retrieveVacationHistory =
+//                vacationHistoryRepository.findById(pk).orElseGet(null);
+//        assertNotNull(retrieveVacationHistory);
     }
 
     public Account makeBaseAccount(){

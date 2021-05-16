@@ -1,10 +1,13 @@
 package com.okm1208.vacation.common.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,13 +18,14 @@ import java.util.List;
 @Entity
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class VacationInfo {
     @Id
     Long accountNo;
 
     @MapsId
     @OneToOne
-    @JoinColumn(name = "accountNo")
     private Account account;
 
     @Column(precision = 4, scale = 2,  nullable = false)
@@ -33,8 +37,8 @@ public class VacationInfo {
     @Column(precision = 4, scale = 2 , nullable = false)
     private BigDecimal remainingDays;
 
-    @OneToMany
-    @JoinColumn(name ="accountNo", referencedColumnName = "accountNo")
-    private List<VacationHistory> vacationHistoryList;
+    @OneToMany(cascade = CascadeType.ALL ,orphanRemoval = true )
+    @JoinColumn(name ="accountNo")
+    private List<VacationHistory> vacationHistoryList = new ArrayList<>();
 
 }

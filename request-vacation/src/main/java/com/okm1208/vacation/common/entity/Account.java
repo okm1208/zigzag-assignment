@@ -42,7 +42,7 @@ public class Account {
     @Column(name = "authority")
     private List<AccountAuthority> roles;
 
-    @OneToOne(mappedBy = "account")
+    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL ,orphanRemoval = true, fetch = FetchType.LAZY)
     @PrimaryKeyJoinColumn
     private VacationInfo vacationInfo;
 

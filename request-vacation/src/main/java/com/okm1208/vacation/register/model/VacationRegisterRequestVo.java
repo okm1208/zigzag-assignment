@@ -1,9 +1,8 @@
 package com.okm1208.vacation.register.model;
 
-import com.okm1208.vacation.common.exception.BadRequestException;
+import com.okm1208.vacation.common.enums.VacationType;
 import lombok.Data;
 import lombok.ToString;
-import org.springframework.security.authentication.BadCredentialsException;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -17,16 +16,22 @@ import java.time.LocalDate;
 public class VacationRegisterRequestVo {
     @NotNull
     private LocalDate startDt;
-    @NotNull
     private LocalDate endDt;
-    private int useDays;
+
+    @NotNull
+    private VacationType vacationType;
+
     private String comment;
 
-    public boolean isValidRequestDate(){
-        if(startDt != null && endDt != null){
-            if(startDt.equals(endDt) ||  startDt.isBefore(endDt)){
-                return true;
+    public boolean isValidRequest(){
+        if(VacationType.ANNUAL_LEAVE.equals(vacationType)){
+            if(startDt != null && endDt != null){
+                if(startDt.equals(endDt) ||  startDt.isBefore(endDt)){
+                    return true;
+                }
             }
+        }else{
+            return true;
         }
         return false;
     }

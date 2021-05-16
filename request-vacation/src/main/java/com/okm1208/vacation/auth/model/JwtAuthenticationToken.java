@@ -59,4 +59,11 @@ public class JwtAuthenticationToken extends AbstractAuthenticationToken {
     public Object getDetails() {
         return this.userDetails;
     }
+
+    public String getId(){
+        if(this.userDetails != null){
+            return this.userDetails.getUsername();
+        }
+        return null;
+    }
 }

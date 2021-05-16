@@ -17,4 +17,12 @@ public class ErrorMessageProperties {
     public static final String EMPTY_AUTHORITIES = "유효한 권한이 없습니다.";
     public static final String CREATE_TOKEN_FAILED = "토큰 생성 실패.";
 
+
+
+
+    public static final String REGISTER_ERROR_01 ="공휴일에는 휴가를 신청 하실 수 없습니다.";
+    public static final String REGISTER_ERROR_02 ="신청하신 날짜에 더이상 휴가를 등록 할 수 없습니다.";
+    public static final String REGISTER_ERROR_03 ="사용하실수 있는 연차가 부족 합니다.";
+
+
 }

@@ -2,6 +2,7 @@ package com.okm1208.vacation.common.enums;
 
 import lombok.AllArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 
 /**
@@ -10,12 +11,13 @@ import java.util.Arrays;
  */
 @AllArgsConstructor
 public enum VacationType {
-    ANNUAL_LEAVE("AL","활성"),
-    HALF_DAY_LEAVE("HDL","잠김"),
-    HALF_AND_HALF_LEAVE("HAHL","탈퇴");
+    ANNUAL_LEAVE("AL","연차" ,BigDecimal.valueOf(1.0) ),
+    HALF_DAY_LEAVE("HDL","반차",BigDecimal.valueOf(0.5) ),
+    HALF_AND_HALF_LEAVE("HAHL","반반차",BigDecimal.valueOf(0.25) );
 
     final String type;
     final String desc;
+    final BigDecimal useDays;
 
     public static VacationType ofVacationType(String type){
         return Arrays.stream(VacationType.values())
@@ -30,5 +32,8 @@ public enum VacationType {
 
     public String getDesc() {
         return desc;
+    }
+    public BigDecimal getUseDays() {
+        return useDays;
     }
 }

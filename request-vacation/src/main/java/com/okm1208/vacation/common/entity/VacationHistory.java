@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -26,6 +27,7 @@ import java.time.LocalDateTime;
 public class VacationHistory {
     @Id
     private Long historyNo;
+
     @Id
     private Long accountNo;
 
@@ -34,6 +36,10 @@ public class VacationHistory {
     private VacationType vacationType;
 
     @Column(nullable = false)
-    private LocalDateTime regDt;
+    private LocalDate regDt;
+
+    @ManyToOne
+    @JoinColumn(name = "accountNo", insertable = false , updatable = false)
+    private VacationInfo vacationInfo;
 
 }
