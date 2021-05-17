@@ -63,7 +63,7 @@ public class AuthIntegrationExceptionApTests {
                         ErrorResponseEntity.class);
         assertThat(response.getStatusCode(), is(HttpStatus.FORBIDDEN));
         assertThat(response.getBody().getType(),is("NotAuthorized"));
-        assertThat(response.getBody().getMessage(),is(ErrorMessageProperties.REQUIRED_TOKEN));
+        assertThat(response.getBody().getMessage(),is(ErrorMessageProperties.INVALID_TOKEN));
     }
 
     @Test

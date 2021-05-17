@@ -5,7 +5,6 @@ package com.okm1208.vacation.common.msg;
  * @created 2021-05-15
  */
 public class ErrorMessageProperties {
-    public static final String REQUIRED_TOKEN = "필수값 누락 ( 인증 토큰 ) ";
 
     public static final String MISMATCH_PASSWORD = "패스워드가 일치 하지 않습니다.";
     public static final String INVALID_ACCOUNT = "유효하지 않은 계정입니다.";

@@ -15,15 +15,12 @@ import com.okm1208.vacation.manager.service.VacationRegisterManager;
 import com.okm1208.vacation.manager.service.VacationRegisterManagerFactory;
 import com.okm1208.vacation.manager.service.impl.VacationCancelManager;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.stream.Collectors;
 
@@ -34,7 +31,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @RestController
 @RequestMapping("/vacations")
-@Api(tags = "휴가 등록 APIs")
+@Api(tags = "휴가 관리 APIs")
 public class VacationController {
 
     @Autowired
@@ -97,12 +94,9 @@ public class VacationController {
                 .vacationType(viewHistory.getVacationType().getDesc())
                 .build());
     }
-//    ANNUAL_LEAVE("AL","연차" ,BigDecimal.valueOf(1.0) ),
-//    HALF_DAY_LEAVE("HDL","반차",BigDecimal.valueOf(0.5) ),
-//    HALF_AND_HALF_LEAVE("HAHL","반반차",BigDecimal.valueOf(0.25)
+
     @ApiOperation(value = "등록 API", notes = "연차, 반차, 반반차 등록 \n\n vacationType 값 \n'AL' : '연차'\n'HDL' : '반차'\n'HAHL' : '반반차'" +
             "\n\n startDt, endDt 값 : 'yyyy-MM-dd'")
-
     @PostMapping
     public CommonResponse<VacationRegisterResponseVo> register(@RequestBody @Valid VacationRegisterRequestVo registerRequest){
         if( !registerRequest.isValidRequest() ){

@@ -1,5 +1,6 @@
 package com.okm1208.vacation.common.exception.handler;
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.okm1208.vacation.common.exception.CustomBusinessException;
 import com.okm1208.vacation.common.model.DefaultErrorResponse;
 import com.okm1208.vacation.common.model.ErrorResponse;
@@ -71,13 +72,8 @@ public class CustomErrorController implements ErrorController {
             if(errorStatus != null){
                 errorHttpStatus =  HttpStatus.valueOf(errorStatus);
             }
-            String errorMessage = null;
-            if(error != null){
-                errorMessage = error.getMessage();
-                log.error("Undefined exception message :{} \n{}",error.getMessage(), ExceptionUtils.getStackTrace(error));
-            }
             ErrorResponse errorResponse = findCommonErrorCodeByDefaultException(error , errorHttpStatus);
-            return this.handleException(errorResponse , errorMessage );
+            return this.handleException(errorResponse , errorResponse.getErrorMessage() );
         }
     }
 
@@ -93,6 +89,7 @@ public class CustomErrorController implements ErrorController {
                 || error instanceof ServletRequestBindingException
                 || error instanceof BindException
                 || error instanceof MethodArgumentNotValidException
+                || error instanceof InvalidFormatException
                 || errorHttpStatus == HttpStatus.BAD_REQUEST) {
 
             return DefaultErrorResponse.BAD_REQUEST;

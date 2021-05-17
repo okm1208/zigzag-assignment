@@ -34,7 +34,7 @@ public class JwtAuthenticationProcessingFilter extends AbstractAuthenticationPro
     public Authentication attemptAuthentication(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws AuthenticationException, IOException, ServletException {
         String accessToken = httpServletRequest.getHeader(JwtProperties.ACCESS_TOKEN_HEADER_NAME);
         if(StringUtils.isEmpty(accessToken)){
-            throw AuthorityException.of(ErrorMessageProperties.REQUIRED_TOKEN);
+            throw AuthorityException.of(ErrorMessageProperties.INVALID_TOKEN);
         }
         return getAuthenticationManager().authenticate(new JwtAuthenticationToken(accessToken));
     }

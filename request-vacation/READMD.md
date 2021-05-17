@@ -49,15 +49,15 @@ http://localhost:8080/swagger-ui.html
 - id : admin
 - password: admin
 
-# Action script
+# Action script 
 ### 휴가 조회 
-* 로그인 API 호출 -> 휴가 조회 API 호출
+* 로그인 API 호출 -> (헤더 AccessToken 추가)-> 휴가 조회 API 호출
 
 ### 휴가 등록
-* 로그인 API 호출 -> 휴가 등록 API 호출 
+* 로그인 API 호출 -> (헤더 AccessToken 추가) -> 휴가 등록 API 호출 
  
 ### 휴가 취소
-* 로그인 API 호출 -> 휴가 등록 API 호출 -> 전체 조회 API 호출 ( or 상세 조회 API 호출 ) -> 휴가 취소 API 호출
+* 로그인 API 호출 -> (헤더 AccessToken 추가) -> 휴가 등록 API 호출 -> 전체 조회 API 호출 ( or 상세 조회 API 호출 ) -> 휴가 취소 API 호출
 
 ## 개발 환경
 - JDK 8
@@ -73,4 +73,4 @@ http://localhost:8080/swagger-ui.html
 - [H2 Database](https://www.h2database.com/html/main.html)
 - [Swagger](https://swagger.io/)
 - [Apache commons](https://commons.apache.org)
-- [Jacoco] (https://www.eclemma.org/jacoco)
+- [Jacoco](https://www.eclemma.org/jacoco)

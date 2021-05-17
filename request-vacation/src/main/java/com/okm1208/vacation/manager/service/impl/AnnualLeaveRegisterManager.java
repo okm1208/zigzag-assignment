@@ -65,7 +65,7 @@ public class AnnualLeaveRegisterManager extends VacationRegisterManager {
             throw BadRequestException.of(REGISTER_ERROR_02);
         }
 
-        //남은 연차일수 비교
+        //남은 연차 일수 체크
         BigDecimal remainingDays = vacationInfo.getRemainingDays();
         BigDecimal registerDays = BigDecimal.valueOf(finalApplyDateList.stream().count());
 
