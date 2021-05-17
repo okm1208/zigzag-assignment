@@ -1,5 +1,6 @@
 package com.okm1208.vacation.manager.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.okm1208.vacation.common.enums.VacationType;
 import lombok.Data;
 import lombok.ToString;
@@ -11,7 +12,6 @@ import java.time.LocalDate;
  * @author Nick ( okm1208@gmail.com )
  * @created 2021-05-15
  */
-@ToString
 @Data
 public class VacationRegisterRequestVo {
     @NotNull
@@ -23,6 +23,7 @@ public class VacationRegisterRequestVo {
 
     private String comment;
 
+    @JsonIgnore
     public boolean isValidRequest(){
         if(VacationType.ANNUAL_LEAVE.equals(vacationType)){
             if(startDt != null && endDt != null){

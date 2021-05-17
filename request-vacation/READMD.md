@@ -20,3 +20,57 @@
     * 연차를 모두 사용한 경우 휴가를 신청할 수 없습니다.
     * 추가 기능: 사용 일수를 입력하는 대신 시작일, 종료일을 가지고 공휴일을 제외하고 계산해도 됩니다.
 * 아직 시작하지 않은 휴가는 취소할 수 있습니다.
+
+---
+
+# build & test & install
+```bash
+Using Maven: mvn package
+```
+
+# Run
+```bash
+java -jar ./target/request-vacation-1.0.0.jar
+```
+
+# DB (h2) 접속 정보
+```bash
+http://localhost:8080/h2
+```
+- id : admin
+- password: admin1234
+
+# Swaager UI 
+```bash
+http://localhost:8080/swagger-ui.html
+```
+
+# API 로그인 정보  
+- id : admin
+- password: admin
+
+# Action script
+### 휴가 조회 
+* 로그인 API 호출 -> 휴가 조회 API 호출
+
+### 휴가 등록
+* 로그인 API 호출 -> 휴가 등록 API 호출 
+ 
+### 휴가 취소
+* 로그인 API 호출 -> 휴가 등록 API 호출 -> 전체 조회 API 호출 ( or 상세 조회 API 호출 ) -> 휴가 취소 API 호출
+
+## 개발 환경
+- JDK 8
+- maven 3.6.3
+- Spring boot 2.3.3
+
+
+## Open Source
+- [Spring Framework](https://spring.io/)
+- [Junit](https://junit.org/junit5/)
+- [Lombok](https://projectlombok.org/)
+- [Hibernate](https://hibernate.org/)
+- [H2 Database](https://www.h2database.com/html/main.html)
+- [Swagger](https://swagger.io/)
+- [Apache commons](https://commons.apache.org)
+- [Jacoco] (https://www.eclemma.org/jacoco)

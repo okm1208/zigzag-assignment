@@ -6,7 +6,6 @@ import com.okm1208.vacation.common.entity.VacationHistory;
 import com.okm1208.vacation.common.exception.BadRequestException;
 import com.okm1208.vacation.common.exception.DataNotFoundException;
 import com.okm1208.vacation.common.msg.ErrorMessageProperties;
-import com.okm1208.vacation.manager.repository.VacationHistoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,9 +21,6 @@ import java.time.LocalDate;
 public class VacationCancelManager {
     @Autowired
     private AccountRepository accountRepository;
-
-    @Autowired
-    private VacationHistoryRepository vacationHistoryRepository;
 
     @Transactional
     public VacationHistory cancel(String accountId, Long historyNo, LocalDate cancelReqDt){
@@ -45,7 +41,6 @@ public class VacationCancelManager {
             throw BadRequestException.of(ErrorMessageProperties.CANCEL_ERROR_01);
         }
 
-//        vacationHistoryRepository.delete(cancelHistory);
         account.getVacationInfo().getVacationHistoryList().remove(cancelHistory);
 
         BigDecimal userDays = account.getVacationInfo().getUseDays();

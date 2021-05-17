@@ -31,7 +31,7 @@ auth:
   token:
     expired-minute:
       access-token: 60
-      refresh-token: 60
+      refresh-token: 120
 
 logging:
   level:

@@ -37,28 +37,28 @@ public class AnnualLeaveRegisterManager extends VacationRegisterManager {
         final LocalDate startDt = registerDto.getStartDt();
         final LocalDate endDt = registerDto.getEndDt();
 
-        DateRange dates = new DateRange(startDt,endDt);
+        DateRange applyRangeDates = new DateRange(startDt,endDt);
 
         //공휴일 체크
-        List<LocalDate> applyDateList =
-                        dates.stream()
-                        .filter(date->!HolidayChecker.isHoliday(date))
-                        .collect(Collectors.toList());
+        List<LocalDate> possibleDateList =
+                    applyRangeDates.stream()
+                            .filter(date->!HolidayChecker.isHoliday(date))
+                            .collect(Collectors.toList());
 
-        if(CollectionUtils.isEmpty(applyDateList)){
+        if(CollectionUtils.isEmpty(possibleDateList)){
             throw BadRequestException.of(REGISTER_ERROR_01);
         }
 
         //등록된 연차와 비교
-        List<LocalDate> registerDateList =
+        List<LocalDate> registeredDateList =
                 vacationInfo.getVacationHistoryList()
                         .stream()
                         .map(VacationHistory::getRegDt)
                         .collect(Collectors.toList());
 
         List<LocalDate> finalApplyDateList =
-                applyDateList.stream().filter(applyDate->
-                        !registerDateList.stream().anyMatch(registerDate->registerDate.equals(applyDate))
+                possibleDateList.stream().filter(applyDate->
+                        !registeredDateList.stream().anyMatch(registerDate->registerDate.equals(applyDate))
         ).collect(Collectors.toList());
 
         if(CollectionUtils.isEmpty(finalApplyDateList)){

@@ -8,8 +8,7 @@ import com.okm1208.vacation.auth.service.LoginAuthentication;
 import com.okm1208.vacation.auth.service.LogoutService;
 import com.okm1208.vacation.auth.service.impl.TokenIssueService;
 import com.okm1208.vacation.common.model.CommonResponse;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +34,7 @@ public class AuthController {
     private LogoutService logoutService;
 
 
-    @ApiOperation(value = "로그인 API")
+    @ApiOperation(value = "로그인 API" , notes = "AccessToken과 RefreshToken 발급")
     @PostMapping(value="/login")
     public CommonResponse<LoginResponseVo> login(@RequestBody @Valid LoginRequestVo loginRequest){
 
@@ -48,7 +47,7 @@ public class AuthController {
                 , refreshToken.getToken()));
     }
 
-    @ApiOperation(value = "AccessToken 재발급 API")
+    @ApiOperation(value = "AccessToken 재발급 API" , notes ="RefreshToken을 기반으로 AccessToken 재발급")
     @PostMapping(value = "/token/reissue")
     public CommonResponse<TokenReIssueResponseVo> reissueAccessToken(
             @RequestHeader(name = "Authorization") String refreshToken){
@@ -58,7 +57,7 @@ public class AuthController {
         return CommonResponse.success(new TokenReIssueResponseVo(reissueToken.getToken()));
     }
 
-    @ApiOperation(value = "로그아웃 API")
+    @ApiOperation(value = "로그아웃 API" , notes = "로그 아웃")
     @PostMapping(value="/logout")
     public CommonResponse logout(
             @RequestHeader(name ="Authorization") String accessToken){
