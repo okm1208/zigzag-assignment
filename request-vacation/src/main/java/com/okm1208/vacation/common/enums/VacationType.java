@@ -24,7 +24,7 @@ public enum VacationType {
         return Arrays.stream(VacationType.values())
                 .filter(v -> v.getType().equals(type))
                 .findAny()
-                .orElseThrow(() -> new RuntimeException(""));
+                .orElseThrow(() -> new RuntimeException("유효하지 않은 휴가 타입 입니다."));
     }
 
     @JsonValue

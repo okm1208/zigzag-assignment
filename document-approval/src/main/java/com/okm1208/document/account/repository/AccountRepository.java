@@ -1,0 +1,12 @@
+package com.okm1208.document.account.repository;
+
+import com.okm1208.document.common.entity.Account;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+/**
+ * @author Nick ( okm1208@gmail.com )
+ * @created 2021-05-17
+ */
+public interface AccountRepository extends JpaRepository<Account, Long> {
+    Account findByAccountId(String accountId);
+}
