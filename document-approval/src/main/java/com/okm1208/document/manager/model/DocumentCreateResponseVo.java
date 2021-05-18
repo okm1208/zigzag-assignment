@@ -1,5 +1,6 @@
 package com.okm1208.document.manager.model;
 
+import com.okm1208.document.common.entity.Document;
 import com.okm1208.document.common.model.DocumentType;
 import lombok.Builder;
 import lombok.Data;
@@ -13,15 +14,12 @@ import java.util.List;
  * @created 2021-05-17
  */
 @Data
-@Builder
-public class DocumentCreateRequestVo {
-    @NotNull
-    private String title;
-    @NotNull
-    private DocumentType type;
-    @NotNull
-    private String content;
+public class DocumentCreateResponseVo {
+    private Long documentNo;
 
-    @NotEmpty
-    private List<Long> approvalAccountNoList;
+    public DocumentCreateResponseVo(Long documentNo){
+        this.documentNo = documentNo;
+    }
+
+
 }

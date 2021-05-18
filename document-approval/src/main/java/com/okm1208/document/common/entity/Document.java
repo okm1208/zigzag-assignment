@@ -1,6 +1,6 @@
 package com.okm1208.document.common.entity;
 
-import com.okm1208.document.common.entity.convert.ApproveStatusConverter;
+import com.okm1208.document.common.entity.convert.ApproveStatusTypeConverter;
 import com.okm1208.document.common.entity.convert.DocumentTypeConverter;
 import com.okm1208.document.common.model.ApproveStatusType;
 import com.okm1208.document.common.model.DocumentType;
@@ -38,11 +38,11 @@ public class Document {
     @Column(length = 1000, nullable = false)
     private String content;
 
-    @OneToMany(mappedBy = "document")
+    @OneToMany(mappedBy = "document" , cascade = CascadeType.ALL)
     private List<Approval> approvalList = new ArrayList<>();
 
     @Column(nullable = false)
-    @Convert(converter = ApproveStatusConverter.class)
+    @Convert(converter = ApproveStatusTypeConverter.class)
     private ApproveStatusType approveStatus;
 
     @Column

@@ -1,6 +1,13 @@
 package com.okm1208.document.manager.controller;
 
+import com.okm1208.document.common.model.CommonResponse;
+import com.okm1208.document.manager.model.DocumentCreateRequestVo;
+import com.okm1208.document.manager.model.DocumentCreateResponseVo;
+import com.okm1208.document.manager.service.DocumentService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 /**
  * @author Nick ( okm1208@gmail.com )
@@ -9,11 +16,15 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "/document")
 public class DocumentController {
+    @Autowired
+    private DocumentService documentService;
 
     //문서 저장
     @PostMapping
     @RequestMapping(value = "")
-    public void create(){
+    public CommonResponse<DocumentCreateResponseVo> create(@RequestBody @Valid DocumentCreateRequestVo documentCreateRequest){
+        Long documentNo = documentService.create("admin", documentCreateRequest);
+        return CommonResponse.success(new DocumentCreateResponseVo(documentNo));
     }
 
 

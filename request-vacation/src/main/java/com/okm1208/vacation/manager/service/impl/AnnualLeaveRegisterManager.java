@@ -15,6 +15,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -86,10 +87,7 @@ public class AnnualLeaveRegisterManager extends VacationRegisterManager {
     @Transactional
     protected void apply(List<ApplyRegisterDto> applyRegisterDtoList, VacationInfo vacationInfo) {
 
-        applyRegisterDtoList =
-                applyRegisterDtoList.stream()
-                        .sorted(Comparator.comparing(ApplyRegisterDto::getRegDt))
-                        .collect(Collectors.toList());
+        Collections.sort(applyRegisterDtoList,Comparator.comparing(ApplyRegisterDto::getRegDt));
 
         for(ApplyRegisterDto applyRegisterDto : applyRegisterDtoList){
             VacationHistory applyVacationHistory = VacationHistory.
@@ -109,7 +107,6 @@ public class AnnualLeaveRegisterManager extends VacationRegisterManager {
             vacationInfo.setRemainingDays(remainingDays.subtract(applyRegisterDto.getVacationType().getUseDays()));
             vacationInfo.setUseDays(useDays.add(applyRegisterDto.getVacationType().getUseDays()));
         }
-
     }
 
     @Override
