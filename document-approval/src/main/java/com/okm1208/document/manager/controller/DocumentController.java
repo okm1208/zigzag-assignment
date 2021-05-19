@@ -1,9 +1,12 @@
 package com.okm1208.document.manager.controller;
 
 import com.okm1208.document.common.model.CommonResponse;
+import com.okm1208.document.manager.model.DocumentApprovalRequestVo;
 import com.okm1208.document.manager.model.DocumentCreateRequestVo;
 import com.okm1208.document.manager.model.DocumentCreateResponseVo;
 import com.okm1208.document.manager.service.DocumentService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,13 +18,14 @@ import javax.validation.Valid;
  */
 @RestController
 @RequestMapping(value = "/document")
+@Api(tags = "문서 전자 결재 APIs")
 public class DocumentController {
     @Autowired
     private DocumentService documentService;
 
-    //문서 저장
+    //문서 생성
+    @ApiOperation(value = "문서 생성 API" , notes = "문서 생성")
     @PostMapping
-    @RequestMapping(value = "")
     public CommonResponse<DocumentCreateResponseVo> create(@RequestBody @Valid DocumentCreateRequestVo documentCreateRequest){
         Long documentNo = documentService.create("admin", documentCreateRequest);
         return CommonResponse.success(new DocumentCreateResponseVo(documentNo));
@@ -29,9 +33,10 @@ public class DocumentController {
 
 
     //문서 결제
-    @PostMapping
-    @RequestMapping(value = "/{no}/approval")
-    public void approval(@PathVariable Long no){
-        // account -> 개인에 할당 되어 있는 문서 결제
+    @ApiOperation(value = "문서 결제 API" , notes = "문서 결재")
+    @PostMapping(value = "/{no}/approval")
+    public CommonResponse<Void> approval(@PathVariable Long no , @RequestBody DocumentApprovalRequestVo approvalRequestVo){
+        documentService.approve("admin",no,approvalRequestVo.getApproveType());
+        return CommonResponse.success();
     }
 }

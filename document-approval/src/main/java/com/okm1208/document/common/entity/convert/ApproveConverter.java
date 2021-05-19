@@ -1,6 +1,5 @@
 package com.okm1208.document.common.entity.convert;
 
-import com.okm1208.document.common.model.ApproveStatusType;
 import com.okm1208.document.common.model.ApproveType;
 
 import javax.persistence.AttributeConverter;

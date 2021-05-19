@@ -4,10 +4,7 @@ import com.okm1208.document.common.entity.convert.ApproveStatusTypeConverter;
 import com.okm1208.document.common.entity.convert.DocumentTypeConverter;
 import com.okm1208.document.common.model.ApproveStatusType;
 import com.okm1208.document.common.model.DocumentType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -23,6 +20,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper = false, doNotUseGetters = true, of = {"documentNo"})
 public class Document {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

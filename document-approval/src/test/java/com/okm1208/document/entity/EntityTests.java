@@ -8,6 +8,7 @@ import com.okm1208.document.common.model.ApproveStatusType;
 import com.okm1208.document.common.model.ApproveType;
 import com.okm1208.document.common.model.DocumentType;
 import com.okm1208.document.manager.repository.ApprovalRepository;
+import com.okm1208.document.manager.repository.DocumentRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -34,9 +35,12 @@ public class EntityTests {
     @Autowired
     private ApprovalRepository approvalRepository;
 
+    @Autowired
+    private DocumentRepository documentRepository;
+
     @Test
     public void 문서_등록_및_삭제_테스트(){
-        Account account = accountRepository.findByAccountId("admin");
+        Account account = accountRepository.findByAccountId("admin").get();
 
         String title = "법인 카드 사용 문서";
 
@@ -67,55 +71,48 @@ public class EntityTests {
 
     @Test
     public void 문서_결제_등록_및_삭제_테스트(){
-        Account account = accountRepository.findByAccountId("admin");
-        Account account2 = Account
-                .builder()
-                .accountId("admin2")
-                .password("test")
-                .approvalList(new ArrayList<>())
-                .regDocumentList(new ArrayList<>())
-                .build();
-
-        account2 = accountRepository.save(account2);
+        Account account = accountRepository.findByAccountId("admin").get();
+        Account account2 = accountRepository.findByAccountId("admin2").get();
 
         //문서 등록
         String title = "일반 결제 문서";
 
-        account.getRegDocumentList().add( Document
-            .builder()
-            .account(account)
-            .title(title)
-            .content(title)
-            .type(DocumentType.NORMAL)
-            .approveStatus(ApproveStatusType.WAITING)
-            .approvalList(new ArrayList<>())
-            .build());
-        accountRepository.save(account);
+        Document document = Document
+                .builder()
+                .account(account)
+                .title(title)
+                .content(title)
+                .type(DocumentType.NORMAL)
+                .approveStatus(ApproveStatusType.WAITING)
+                .approvalList(new ArrayList<>())
+                .build();
+        account.getRegDocumentList().add(document);
 
-        Document insertDocument = account.getRegDocumentList().get(0);
+        documentRepository.save(document);
+
         Approval approval = Approval
                 .builder()
                 .account(account)
-                .document(insertDocument)
+                .document(document)
                 .approveType(ApproveType.WAITING)
                 .orderNo(1L)
                 .build();
-        insertDocument.getApprovalList().add(approval);
+        document.getApprovalList().add(approval);
         account.getApprovalList().add(approval);
 
-        accountRepository.save(account);
+        approvalRepository.save(approval);
 
         Approval approval2 = Approval
                 .builder()
                 .account(account2)
-                .document(insertDocument)
+                .document(document)
                 .approveType(ApproveType.WAITING)
                 .orderNo(2L)
                 .build();
-        insertDocument.getApprovalList().add(approval2);
+        document.getApprovalList().add(approval2);
         account2.getApprovalList().add(approval2);
 
-        accountRepository.save(account2);
+        approvalRepository.save(approval2);
 
         List<Approval> approvalList = approvalRepository.findAll();
 

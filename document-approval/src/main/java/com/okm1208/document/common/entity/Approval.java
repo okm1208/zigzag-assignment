@@ -2,10 +2,7 @@ package com.okm1208.document.common.entity;
 
 import com.okm1208.document.common.entity.convert.ApproveConverter;
 import com.okm1208.document.common.model.ApproveType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -20,6 +17,7 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper = false, doNotUseGetters = true, of = {"approvalNo"})
 public class Approval {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

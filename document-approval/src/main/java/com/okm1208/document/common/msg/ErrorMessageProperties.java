@@ -18,11 +18,13 @@ public class ErrorMessageProperties {
     public static final String EMPTY_AUTHORITIES = "유효한 권한이 없습니다.";
     public static final String CREATE_TOKEN_FAILED = "토큰 생성 실패.";
 
-
-
-
     public static final String CREATE_ERROR_01 ="결제자를 한명 이상 지정해주세요.";
     public static final String CREATE_ERROR_02 ="결제자가 존재 하지 않습니다.";
 
+    public static final String APPROVE_ERROR_01 = "해당 문서에 결제 권한이 존재 하지 않습니다.";
+    public static final String APPROVE_ERROR_02 = "현재 결제 가능한 상태의 문서가 아닙니다.";
+    public static final String APPROVE_ERROR_03 = "먼저 결제 해야할 건이 존재합니다.";
+    public static final String APPROVE_ERROR_04 = "해당 문서는 거절된 문서입니다.";
+    public static final String APPROVE_ERROR_05 = "요청 할 수 없는 결제 상태입니다.";
 
 }
