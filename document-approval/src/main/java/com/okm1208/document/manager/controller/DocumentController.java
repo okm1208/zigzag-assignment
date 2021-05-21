@@ -4,6 +4,7 @@ import com.okm1208.document.common.model.CommonResponse;
 import com.okm1208.document.manager.model.DocumentApprovalRequestVo;
 import com.okm1208.document.manager.model.DocumentCreateRequestVo;
 import com.okm1208.document.manager.model.DocumentCreateResponseVo;
+import com.okm1208.document.manager.model.DocumentSearchResponseVo;
 import com.okm1208.document.manager.service.DocumentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,7 +37,18 @@ public class DocumentController {
     @ApiOperation(value = "문서 결제 API" , notes = "문서 결재")
     @PostMapping(value = "/{no}/approval")
     public CommonResponse<Void> approval(@PathVariable Long no , @RequestBody DocumentApprovalRequestVo approvalRequestVo){
-        documentService.approve("admin",no,approvalRequestVo.getApproveType());
+        documentService.approve("admin",no,approvalRequestVo.getApproveType(), approvalRequestVo.getComment());
         return CommonResponse.success();
     }
+
+    //문서 조회
+
+    @ApiOperation(value = "문서 조회 API" , notes = "문서 조회")
+    @GetMapping
+    public CommonResponse<DocumentSearchResponseVo> search(){
+        return CommonResponse.success(documentService.search("admin"));
+    }
+
+
+
 }

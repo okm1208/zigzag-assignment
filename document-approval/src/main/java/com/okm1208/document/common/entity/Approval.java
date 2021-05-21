@@ -37,4 +37,7 @@ public class Approval {
     @Column
     @Convert(converter = ApproveConverter.class)
     private ApproveType approveType;
+
+    @Column(length = 500)
+    private String comment;
 }

@@ -13,4 +13,6 @@ import javax.validation.constraints.NotNull;
 public class DocumentApprovalRequestVo {
     @NotNull
     private ApproveType approveType;
+
+    private String comment;
 }

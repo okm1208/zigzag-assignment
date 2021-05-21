@@ -124,7 +124,7 @@ public class DocumentCreateTests {
         // CASE 1 : 잘못된 결제 상태 요청
         BadRequestException badRequestThrown = assertThrows(
                 BadRequestException.class,
-                () ->  documentService.approve(adminId, documentNo, ApproveType.WAITING)
+                () ->  documentService.approve(adminId, documentNo, ApproveType.WAITING, "")
         );
         assertThat(badRequestThrown.getMessage(), is(ErrorMessageProperties.APPROVE_ERROR_05));
 
@@ -132,7 +132,7 @@ public class DocumentCreateTests {
         // CASE 2: 존재 하지 않은 문서 요청
         DataNotFoundException dataNotRequestThrown = assertThrows(
                 DataNotFoundException.class,
-                () ->   documentService.approve(adminId, Long.MAX_VALUE, ApproveType.APPROVE)
+                () ->   documentService.approve(adminId, Long.MAX_VALUE, ApproveType.APPROVE, "")
         );
         assertThat(dataNotRequestThrown.getMessage(), is(ErrorMessageProperties.EMPTY_DATA));
 
@@ -140,17 +140,17 @@ public class DocumentCreateTests {
         // CASE 3: 문서 결제 권한 없음
         AuthorityException authorityRequestThrown = assertThrows(
                 AuthorityException.class,
-                () ->  documentService.approve(admin2Id, documentNo, ApproveType.APPROVE)
+                () ->  documentService.approve(admin2Id, documentNo, ApproveType.APPROVE, "")
         );
         assertThat(authorityRequestThrown.getMessage(), is(ErrorMessageProperties.APPROVE_ERROR_01));
 
         // CASE 4 : 성공
-        documentService.approve(adminId, documentNo, ApproveType.APPROVE);
+        documentService.approve(adminId, documentNo, ApproveType.APPROVE, "");
         Document applyDocument = documentRepository.findById(documentNo).orElseThrow(()-> new RuntimeException("존재하지 않은 문서"));
         assertThat(applyDocument.getApproveStatus(), is(ApproveStatusType.APPROVING));
 
 
-        documentService.approve(admin3Id, documentNo, ApproveType.APPROVE);
+        documentService.approve(admin3Id, documentNo, ApproveType.APPROVE, "");
         applyDocument = documentRepository.findById(documentNo).orElseThrow(()-> new RuntimeException("존재하지 않은 문서"));
         assertThat(applyDocument.getApproveStatus(), is(ApproveStatusType.APPROVE));
     }

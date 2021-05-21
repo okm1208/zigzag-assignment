@@ -12,6 +12,8 @@ import com.okm1208.document.common.model.ApproveStatusType;
 import com.okm1208.document.common.model.ApproveType;
 import com.okm1208.document.common.msg.ErrorMessageProperties;
 import com.okm1208.document.manager.model.DocumentCreateRequestVo;
+import com.okm1208.document.manager.model.DocumentSearchResponseVo;
+import com.okm1208.document.manager.model.DocumentVo;
 import com.okm1208.document.manager.repository.ApprovalRepository;
 import com.okm1208.document.manager.repository.DocumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +44,39 @@ public class DocumentService {
     @Autowired
     private ApprovalRepository approvalRepository;
 
+
+    @Transactional(readOnly = true)
+    public DocumentSearchResponseVo search(String searchAccountId){
+
+        Account searchAccount = accountRepository.findByAccountId(searchAccountId)
+                .orElseThrow(()->AuthenticationException.of(ErrorMessageProperties.ACCOUNT_NOT_FOUND));
+
+        //생성한 문서 중 결제 진행 중인 문서
+        List<DocumentVo> outboxDocumentList = searchAccount.getRegDocumentList()
+                .stream()
+                .filter(document -> ApproveStatusType.WAITING.equals(document.getApproveStatus()))
+                .map(document -> new DocumentVo(document))
+                .collect(Collectors.toList());
+
+        List<Approval> myApprovalList = searchAccount.getApprovalList();
+        //내가 결제를 해야 할 문서
+        List<DocumentVo> inboxDocumentList = myApprovalList
+                .stream()
+                .filter(approval-> ApproveType.WAITING.equals(approval.getApproveType()))
+                .map(approval -> new DocumentVo(approval.getDocument()))
+                .collect(Collectors.toList());
+
+        //내가 관여한 문서 중 결제가 완료(승인 또는 거절) 된 문서
+        List<DocumentVo> archiveDocumentList = myApprovalList
+                .stream()
+                .map(approval -> new DocumentVo(approval.getDocument()))
+                .filter(document-> ApproveStatusType.REJECT.equals(document.getApproveStatus()) ||
+                        ApproveStatusType.APPROVE.equals(document.getApproveStatus()))
+                .collect(Collectors.toList());
+
+        return new DocumentSearchResponseVo(inboxDocumentList, outboxDocumentList,archiveDocumentList);
+    }
+
     @Transactional
     public Long create(String createAccountId, DocumentCreateRequestVo documentCreateRequest){
         Account createAccount = accountRepository.findByAccountId(createAccountId)
@@ -60,7 +95,7 @@ public class DocumentService {
                 .approvalList(new ArrayList<>())
                 .build();
 
-        createAccount.getRegDocumentList().add(document);
+//        createAccount.getApprovalList().add(document);
         documentRepository.save(document);
 
         Long orderNo = 0L;
@@ -91,13 +126,16 @@ public class DocumentService {
 
     //문서 결제
     @Transactional
-    public void approve(String createAccountId, Long documentNo , ApproveType reqApproveType){
+    public void approve(String approveAccountId,
+                        Long documentNo ,
+                        ApproveType reqApproveType,
+                        String comment){
 
         if(ApproveType.WAITING.equals(reqApproveType)){
             throw BadRequestException.of(ErrorMessageProperties.APPROVE_ERROR_05);
         }
         Account approvalAccount =
-                accountRepository.findByAccountId(createAccountId).orElseThrow(
+                accountRepository.findByAccountId(approveAccountId).orElseThrow(
                         ()->AuthenticationException.of(ErrorMessageProperties.ACCOUNT_NOT_FOUND));
 
         Document approvalDocument = documentRepository.findById(documentNo).orElseThrow(
@@ -113,7 +151,7 @@ public class DocumentService {
 
 
         possibleApproval.setApproveType(reqApproveType);
-
+        possibleApproval.setComment(comment);
         approvalDocument.setApproveStatus(
                 findApproveStatusType(
                         approvalDocument
