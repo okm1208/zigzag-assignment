@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -36,4 +37,35 @@ public class Account {
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Document> regDocumentList = new ArrayList<>();
+
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name="account_authorities" ,joinColumns = @JoinColumn(name = "accountNo") )
+    @Enumerated(EnumType.STRING)
+    @Column(name = "authority")
+    private List<AccountAuthority> roles;
+
+    public enum AccountAuthority implements GrantedAuthority {
+        ROLE_ADMIN, ROLE_USER;
+
+        @Override
+        public String getAuthority() {
+            return this.name();
+        }
+
+        @Override
+        public String toString(){
+            return this.name();
+        }
+
+        public static AccountAuthority findByName(String name){
+            for(AccountAuthority v : values()){
+                if( v.name().equals(name)){
+                    return v;
+                }
+            }
+            return null;
+        }
+    }
+
 }

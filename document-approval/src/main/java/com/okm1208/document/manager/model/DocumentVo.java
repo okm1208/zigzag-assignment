@@ -26,5 +26,6 @@ public class DocumentVo {
         this.title = document.getTitle();
         this.content = document.getContent();
         this.approveStatus = document.getApproveStatus();
+        this.documentType = document.getType();
     }
 }

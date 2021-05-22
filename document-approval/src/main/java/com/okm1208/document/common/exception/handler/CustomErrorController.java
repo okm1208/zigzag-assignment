@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindException;
@@ -110,9 +111,8 @@ public class CustomErrorController implements ErrorController {
         else if(error instanceof AccessDeniedException
                 || errorHttpStatus == HttpStatus.FORBIDDEN){
             return DefaultErrorResponse.FORBIDDEN;
-        }
-        else if(errorHttpStatus == HttpStatus.UNAUTHORIZED){
-            return DefaultErrorResponse.UNAUTHORIZED;
+        }else if(error instanceof AuthenticationException || errorHttpStatus == HttpStatus.UNAUTHORIZED){
+            return DefaultErrorResponse.UNAUTHORIZED ;
         }
         else {
             return DefaultErrorResponse.INTERNAL_SERVER_ERROR;
